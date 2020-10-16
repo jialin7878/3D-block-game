@@ -14,7 +14,7 @@ public class BlockMovement : MonoBehaviour
         {
             Debug.Log("GAME OVER");
             GameManager.manager.gameOver();
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 
