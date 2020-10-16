@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public Canvas inGameCanvas;
     public GameObject pauseScreen;
 
+    public Sprite[] displays;
+    public Image spriteDisplay;
+
     void Awake()
     {
         if (manager != null && manager != this)
@@ -93,6 +96,11 @@ public class GameManager : MonoBehaviour
         inGameCanvas.gameObject.SetActive(true);
         isGameStarted = true;
         spawner.spawnNext();
+    }
+
+    public void displaynextBlock(int index)
+    {
+        spriteDisplay.sprite = displays[index];
     }
 
     private void Update()
