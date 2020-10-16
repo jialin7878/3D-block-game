@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     private bool isGameOver;
     public Text gameOverText;
 
+    public Text scoreText;
+    private int score = 0;
+
     void Awake()
     {
         if (manager != null && manager != this)
@@ -24,6 +27,12 @@ public class GameManager : MonoBehaviour
 
         //start first game
         spawner.spawnNext();
+    }
+
+    public void incrementScore()
+    {
+        score++;
+        scoreText.text = "Score: " + score;
     }
 
     public void gameOver()

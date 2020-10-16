@@ -34,6 +34,7 @@ public class Playfield : MonoBehaviour
                 grid[x, y, z] = null;
             }
         }
+        GameManager.manager.incrementScore();
     }
 
     public static void clearField()
