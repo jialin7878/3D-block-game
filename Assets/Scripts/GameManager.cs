@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         if(isGameStarted && !isGameOver)
         {
-            if(!isGamePaused && Input.GetKeyDown(KeyCode.P))
+            if(!isGamePaused && (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)))
             {
                 pauseGame();
             }
