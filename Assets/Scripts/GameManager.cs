@@ -8,11 +8,16 @@ public class GameManager : MonoBehaviour
     public static GameManager manager;
     public Spawner spawner;
 
-    private bool isGameOver;
+    public bool isGameStarted;
+    public bool isGameOver;
+    public bool isGamePaused;
     public Text gameOverText;
 
     public Text scoreText;
     private int score = 0;
+
+    public Canvas startMenu;
+    public GameObject pauseScreen;
 
     void Awake()
     {
@@ -24,15 +29,18 @@ public class GameManager : MonoBehaviour
             manager = this;
         }
         DontDestroyOnLoad(gameObject);
-
-        //start first game
-        spawner.spawnNext();
     }
 
     public void incrementScore()
     {
         score++;
         scoreText.text = "Score: " + score;
+    }
+
+    void resetScore()
+    {
+        score = 0;
+        scoreText.text = "Score: " + 0;
     }
 
     public void gameOver()
@@ -47,8 +55,8 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         //clear blocks
         Playfield.clearField();
-        //spawn first block
-        spawner.spawnNext();
+
+        startGame();
     }
 
     public void quit()
@@ -56,19 +64,48 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void backToMenu()
+    {
+        startMenu.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(false);
+        isGameStarted = false;
+        isGameOver = false;
+    }
+
     public void pauseGame()
     {
-        
+        pauseScreen.SetActive(true);
+        isGamePaused = true;
+    }
+
+    public void resumeGame()
+    {
+        pauseScreen.SetActive(false);
+        isGamePaused = false;
     }
 
     public void startGame()
     {
-
+        resetScore();
+        isGameStarted = true;
+        spawner.spawnNext();
     }
 
     private void Update()
     {
-        if(isGameOver)
+        if(isGameStarted && !isGameOver)
+        {
+            if(!isGamePaused && Input.GetKeyDown(KeyCode.P))
+            {
+                pauseGame();
+            }
+            if(isGamePaused && Input.GetKeyDown(KeyCode.R))
+            {
+                resumeGame();
+            }
+        }
+
+        if(isGameStarted && isGameOver)
         {
             if(Input.GetKeyDown(KeyCode.R))
             {
@@ -77,7 +114,7 @@ public class GameManager : MonoBehaviour
 
             if(Input.GetKeyDown(KeyCode.Q))
             {
-                quit();
+                backToMenu();
             }
         } else
         {

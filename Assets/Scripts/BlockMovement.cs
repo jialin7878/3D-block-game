@@ -87,11 +87,11 @@ public class BlockMovement : MonoBehaviour
         }
     }
 
-    void Update()
+    void parseKeyInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            tryToMove(new Vector3(-1, 0, 0), false); 
+            tryToMove(new Vector3(-1, 0, 0), false);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -128,7 +128,7 @@ public class BlockMovement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
         {
-            if(!tryToMove(new Vector3(0, -1, 0), false))
+            if (!tryToMove(new Vector3(0, -1, 0), false))
             {
                 Playfield.deleteFullLayers();
                 GameManager.manager.spawner.spawnNext();
@@ -136,6 +136,14 @@ public class BlockMovement : MonoBehaviour
             }
 
             lastFall = Time.time;
+        }
+    }
+
+    void Update()
+    {
+        if(GameManager.manager.isGameStarted && !GameManager.manager.isGamePaused)
+        {
+            parseKeyInput();
         }
     }
 
