@@ -14,7 +14,7 @@ public class BlockMovement : MonoBehaviour
         if (!isValidGridPos())
         {
             GameManager.manager.gameOver();
-            Destroy(this.gameObject);
+            enabled = false;
         }
     }
 
