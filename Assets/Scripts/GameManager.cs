@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -16,7 +17,8 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     private int score = 0;
 
-    public Canvas startMenu;
+    public Canvas startCanvas;
+    public Canvas inGameCanvas;
     public GameObject pauseScreen;
 
     void Awake()
@@ -28,7 +30,6 @@ public class GameManager : MonoBehaviour
         {
             manager = this;
         }
-        DontDestroyOnLoad(gameObject);
     }
 
     public void incrementScore()
@@ -51,9 +52,10 @@ public class GameManager : MonoBehaviour
 
     public void restart()
     {
-        gameOverText.gameObject.SetActive(false);
         isGameOver = false;
-        //clear blocks
+        //reload scene, destroying gameobjects
+        SceneManager.LoadScene(0);
+        //reset matrix
         Playfield.clearField();
 
         startGame();
@@ -66,7 +68,8 @@ public class GameManager : MonoBehaviour
 
     public void backToMenu()
     {
-        startMenu.gameObject.SetActive(true);
+        startCanvas.gameObject.SetActive(true);
+        inGameCanvas.gameObject.SetActive(false);
         gameOverText.gameObject.SetActive(false);
         isGameStarted = false;
         isGameOver = false;
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         resetScore();
+        inGameCanvas.gameObject.SetActive(true);
         isGameStarted = true;
         spawner.spawnNext();
     }

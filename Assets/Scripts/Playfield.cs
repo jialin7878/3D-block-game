@@ -45,11 +45,7 @@ public class Playfield : MonoBehaviour
             {
                 for (int z = 0; z < d; ++z)
                 {
-                    if(grid[x, y, z] != null)
-                    {
-                        Destroy(grid[x, y, z].gameObject);
-                        grid[x, y, z] = null;
-                    }
+                    grid[x, y, z] = null;
                 }
             }
         }
