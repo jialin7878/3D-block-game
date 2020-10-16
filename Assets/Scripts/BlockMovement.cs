@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BlockMovement : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class BlockMovement : MonoBehaviour
         // Block is above upper bound
         if (!isValidGridPos())
         {
-            Debug.Log("GAME OVER");
             GameManager.manager.gameOver();
             Destroy(this.gameObject);
         }
@@ -75,6 +75,18 @@ public class BlockMovement : MonoBehaviour
         return false;
     }
 
+    void hardDrop()
+    {
+        for(int i = 14; i >= 0; i--)
+        {
+            Vector3 v = new Vector3(0, -i, 0);
+            if (tryToMove(v, false))
+            {
+                break;
+            }
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -110,8 +122,10 @@ public class BlockMovement : MonoBehaviour
             tryToMove(new Vector3(0, -90, 0), true);
 
         }
-        // Move Downwards and Fall
-        //Time.time - lastFall >= 1
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            hardDrop();
+        }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
         {
             if(!tryToMove(new Vector3(0, -1, 0), false))

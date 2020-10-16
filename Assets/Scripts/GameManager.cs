@@ -61,6 +61,11 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void startGame()
+    {
+
+    }
+
     private void Update()
     {
         if(isGameOver)
