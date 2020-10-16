@@ -1,2 +1,2 @@
 # 3D-block-game
-dun sue pls
+any resemblance to an iconic arcade game is purely imaginary
