@@ -4,35 +4,18 @@ using UnityEngine;
 
 public class BlockMaterial : MonoBehaviour
 {
-    public Texture3D image;
-    public int borderWidth = 30;
- 
-    void Start()
+    Renderer r;
+
+    private void Start()
     {
-
-
-        Color borderColor = new Color(1, 0, 0, 1);
-
-        for (int x = 0; x < image.width; x++) {
-            for (int y = 0; y < image.height; y++) {
-                for(int z = 0; z < image.depth; z++)
-                {
-                    if (x < borderWidth || x > image.width - 1 - borderWidth)
-                    {
-                        image.SetPixel(x, y, z, borderColor);
-                    }
-                    if (y < borderWidth || y > image.width - 1 - borderWidth)
-                    {
-                        image.SetPixel(x, y, z, borderColor);
-                    }
-                    if (z < borderWidth || z > image.width - 1 - borderWidth)
-                    {
-                        image.SetPixel(x, y, z, borderColor);
-                    }
-                }
-            }
-        }
-
-        image.Apply();
+        r = this.GetComponent<Renderer>();
     }
+
+    public void changeColor()
+    {
+        Color c = new Color(0.65f, 0.65f, 0.70f);
+        r.material.SetColor("Color_96A321DA", c);
+    }
+
+
 }

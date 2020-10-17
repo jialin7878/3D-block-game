@@ -87,6 +87,18 @@ public class BlockMovement : MonoBehaviour
         }
     }
 
+    void touchDown()
+    {
+        Playfield.deleteFullLayers();
+        GameManager.manager.spawnNext();
+        enabled = false;
+        foreach(Transform child in transform)
+        {
+            child.GetComponent<BlockMaterial>().changeColor();
+        }
+
+    }
+
     void parseKeyInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -125,17 +137,14 @@ public class BlockMovement : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             hardDrop();
-            Playfield.deleteFullLayers();
-            GameManager.manager.spawnNext();
-            enabled = false;
+            touchDown();
+
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
         {
             if (!tryToMove(new Vector3(0, -1, 0), false))
             {
-                Playfield.deleteFullLayers();
-                GameManager.manager.spawnNext();
-                enabled = false;
+                touchDown();
             }
 
             lastFall = Time.time;

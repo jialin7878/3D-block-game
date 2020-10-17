@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager manager;
     public Spawner spawner;
+    public Constants c;
 
     public bool isGameStarted;
     public bool isGameOver;

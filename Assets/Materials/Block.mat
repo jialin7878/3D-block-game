@@ -81,5 +81,6 @@ Material:
     - _WireThickness: 100
     - _ZWrite: 0
     m_Colors:
+    - Color_96A321DA: {r: 0.3537736, g: 0.8338277, b: 1, a: 0}
     - _Color: {r: 0.24857599, g: 0.9245283, b: 0.8977882, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
