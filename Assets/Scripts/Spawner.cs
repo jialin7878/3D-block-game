@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.SceneManagement;
 
 public class Spawner : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class Spawner : MonoBehaviour
         int i = order[0];
         order.RemoveAt(0);
         Debug.Log("i = " + i);
+        Debug.Log(SceneManager.GetActiveScene());
 
         Instantiate(blocks[i], transform.position, Quaternion.identity);
     }

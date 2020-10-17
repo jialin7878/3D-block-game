@@ -44,4 +44,13 @@ public class InGameDisplay : MonoBehaviour
     {
         pauseScreen.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        GameManager.manager.OnPlayerPause -= showPauseScreen;
+        GameManager.manager.OnPlayerResume -= hidePauseScreen;
+        GameManager.manager.OnPlayerScore -= setScoreDisplay;
+        GameManager.manager.OnGameOver -= showGameOver;
+        GameManager.manager.OnBlockSpawned -= setBlockDisplay;
+    }
 }

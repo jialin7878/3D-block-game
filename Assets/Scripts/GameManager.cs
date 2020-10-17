@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
     public void restart()
     {
         isGameOver = false;
-        loadGame();
         Playfield.clearField();
 
         startGame();
@@ -90,15 +89,19 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         isGameStarted = true;
-        loadGame();
+
         resetScore();
-        //spawn first block
-        spawnNext();
+        StartCoroutine(loadScene());
     }
 
-    void loadGame()
+    IEnumerator loadScene()
     {
-        SceneManager.LoadSceneAsync(1);
+        AsyncOperation op = SceneManager.LoadSceneAsync(1);
+        while (!op.isDone)
+        {
+            yield return null;
+        }
+        spawnNext();
     }
 
     public void spawnNext()
