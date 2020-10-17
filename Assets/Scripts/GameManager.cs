@@ -19,9 +19,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPlayerPause;
     public event Action OnPlayerResume;
     public event Action OnGameOver;
-
-
-
+    public event Action<int> OnBlockSpawned;
     #endregion
 
 
@@ -58,9 +56,7 @@ public class GameManager : MonoBehaviour
     public void restart()
     {
         isGameOver = false;
-        //reload scene, destroying gameobjects
-        SceneManager.LoadScene(1);
-        //reset matrix
+        loadGame();
         Playfield.clearField();
 
         startGame();
@@ -93,33 +89,33 @@ public class GameManager : MonoBehaviour
 
     public void startGame()
     {
-        SceneManager.LoadScene(1);
+        isGameStarted = true;
+        loadGame();
         resetScore();
-        isGameStarted = true;
-        spawner.spawnNext();
+        //spawn first block
+        spawnNext();
     }
 
-
-#if (UNITY_EDITOR)
-    //for myself
-    void startFromGameScreen()
+    void loadGame()
     {
-        isGameStarted = true;
-        spawner.spawnNext();
+        SceneManager.LoadSceneAsync(1);
     }
-#endif
+
+    public void spawnNext()
+    {
+        Debug.Log("called spawn next");
+        spawner.spawnNext();
+        OnBlockSpawned?.Invoke(spawner.getNext());
+    }
 
     private void Update()
     {
-#if (UNITY_EDITOR)
-        if(!isGameStarted)
+# if UNITY_EDITOR
+        if(Input.GetKeyDown(KeyCode.U))
         {
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                startFromGameScreen();
-            }
+            spawnNext();
         }
-#endif
+# endif
 
         if (isGameStarted && !isGameOver)
         {

@@ -11,6 +11,11 @@ public class Spawner : MonoBehaviour
     private System.Random rng = new System.Random();
     private List<int> order = new List<int>();
 
+    private void Awake()
+    {
+        generateOrders();
+    }
+
     void generateOrders()
     {
         List<int> list = new List<int>() { 0, 1, 2, 3, 4, 5, 6};
@@ -33,11 +38,16 @@ public class Spawner : MonoBehaviour
         {
             generateOrders();
         }
-        //GameManager.manager.displaynextBlock(order[1]);
         int i = order[0];
         order.RemoveAt(0);
+        Debug.Log("i = " + i);
 
         Instantiate(blocks[i], transform.position, Quaternion.identity);
+    }
+
+    public int getNext()
+    {
+        return order[0];
     }
 
 }

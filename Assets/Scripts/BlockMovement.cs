@@ -126,7 +126,7 @@ public class BlockMovement : MonoBehaviour
         {
             hardDrop();
             Playfield.deleteFullLayers();
-            GameManager.manager.spawner.spawnNext();
+            GameManager.manager.spawnNext();
             enabled = false;
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
@@ -134,7 +134,7 @@ public class BlockMovement : MonoBehaviour
             if (!tryToMove(new Vector3(0, -1, 0), false))
             {
                 Playfield.deleteFullLayers();
-                GameManager.manager.spawner.spawnNext();
+                GameManager.manager.spawnNext();
                 enabled = false;
             }
 

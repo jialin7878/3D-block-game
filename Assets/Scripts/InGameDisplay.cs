@@ -18,6 +18,7 @@ public class InGameDisplay : MonoBehaviour
         GameManager.manager.OnPlayerResume += hidePauseScreen;
         GameManager.manager.OnPlayerScore += setScoreDisplay;
         GameManager.manager.OnGameOver += showGameOver;
+        GameManager.manager.OnBlockSpawned += setBlockDisplay;
     }
     public void showGameOver()
     {
