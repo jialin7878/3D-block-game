@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +12,18 @@ public class GameManager : MonoBehaviour
     public bool isGameStarted;
     public bool isGameOver;
     public bool isGamePaused;
-    public Text gameOverText;
-
-    public Text scoreText;
     private int score = 0;
 
-    public Canvas startCanvas;
-    public Canvas inGameCanvas;
-    public GameObject pauseScreen;
+    #region Events
+    public event Action<int> OnPlayerScore;
+    public event Action OnPlayerPause;
+    public event Action OnPlayerResume;
+    public event Action OnGameOver;
 
-    public Sprite[] displays;
-    public Image spriteDisplay;
+
+
+    #endregion
+
 
     void Awake()
     {
@@ -33,31 +34,32 @@ public class GameManager : MonoBehaviour
         {
             manager = this;
         }
+        DontDestroyOnLoad(this);
     }
 
     public void incrementScore()
     {
         score++;
-        scoreText.text = "Score: " + score;
+        OnPlayerScore?.Invoke(score);
     }
 
     void resetScore()
     {
         score = 0;
-        scoreText.text = "Score: " + 0;
+        OnPlayerScore?.Invoke(score);
     }
 
     public void gameOver()
     {
-        gameOverText.gameObject.SetActive(true);
         isGameOver = true;
+        OnGameOver?.Invoke();
     }
 
     public void restart()
     {
         isGameOver = false;
         //reload scene, destroying gameobjects
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
         //reset matrix
         Playfield.clearField();
 
@@ -71,41 +73,55 @@ public class GameManager : MonoBehaviour
 
     public void backToMenu()
     {
-        startCanvas.gameObject.SetActive(true);
-        inGameCanvas.gameObject.SetActive(false);
-        gameOverText.gameObject.SetActive(false);
         isGameStarted = false;
         isGameOver = false;
+
+        SceneManager.LoadScene(0);
     }
 
     public void pauseGame()
     {
-        pauseScreen.SetActive(true);
         isGamePaused = true;
+        OnPlayerPause?.Invoke();
     }
 
     public void resumeGame()
     {
-        pauseScreen.SetActive(false);
         isGamePaused = false;
+        OnPlayerResume?.Invoke();
     }
 
     public void startGame()
     {
+        SceneManager.LoadScene(1);
         resetScore();
-        inGameCanvas.gameObject.SetActive(true);
         isGameStarted = true;
         spawner.spawnNext();
     }
 
-    public void displaynextBlock(int index)
+
+#if (UNITY_EDITOR)
+    //for myself
+    void startFromGameScreen()
     {
-        spriteDisplay.sprite = displays[index];
+        isGameStarted = true;
+        spawner.spawnNext();
     }
+#endif
 
     private void Update()
     {
-        if(isGameStarted && !isGameOver)
+#if (UNITY_EDITOR)
+        if(!isGameStarted)
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                startFromGameScreen();
+            }
+        }
+#endif
+
+        if (isGameStarted && !isGameOver)
         {
             if(!isGamePaused && (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)))
             {

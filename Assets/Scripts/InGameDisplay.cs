@@ -1,18 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameDisplay : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Sprite[] displays;
+
+    public GameObject pauseScreen;
+    public Text scoreText;
+    public Text gameOverText;
+    public Image blockDisplay;
+
+    private void Start()
     {
-        
+        GameManager.manager.OnPlayerPause += showPauseScreen;
+        GameManager.manager.OnPlayerResume += hidePauseScreen;
+        GameManager.manager.OnPlayerScore += setScoreDisplay;
+        GameManager.manager.OnGameOver += showGameOver;
+    }
+    public void showGameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void setScoreDisplay(int score)
     {
-        
+        scoreText.text = "Score: " + score;
+    }
+
+    public void setBlockDisplay(int index)
+    {
+        blockDisplay.sprite = displays[index];
+    }
+
+    public void showPauseScreen()
+    {
+        pauseScreen.SetActive(true);
+    }
+
+    public void hidePauseScreen()
+    {
+        pauseScreen.SetActive(false);
     }
 }

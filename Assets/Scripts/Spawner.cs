@@ -33,7 +33,7 @@ public class Spawner : MonoBehaviour
         {
             generateOrders();
         }
-        GameManager.manager.displaynextBlock(order[1]);
+        //GameManager.manager.displaynextBlock(order[1]);
         int i = order[0];
         order.RemoveAt(0);
 
