@@ -125,6 +125,9 @@ public class BlockMovement : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             hardDrop();
+            Playfield.deleteFullLayers();
+            GameManager.manager.spawner.spawnNext();
+            enabled = false;
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
         {
