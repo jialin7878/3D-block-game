@@ -51,19 +51,25 @@ public class PlayfabData : MonoBehaviour
             MaxResultsCount = 10
         };
         PlayFabClientAPI.GetLeaderboard(request,
-            result =>
-            {
-                Debug.Log("retrieved leaderboard");
-                foreach (PlayerLeaderboardEntry entry in result.Leaderboard)
-                {
-                    Debug.Log(entry.DisplayName + ": " + entry.StatValue);
-                }
-            },
+            result => OnGetLeaderboard(result, leaderboardName),
             error =>
             {
                 Debug.LogError("error getting leaderboard");
                 Debug.Log(error.Error);
             });
+    }
+
+    private static void OnGetLeaderboard(GetLeaderboardResult result, string name)
+    {
+        Debug.Log("retrieved leaderboard " + name);
+        if(name == "Highscore")
+        {
+            GameManager.manager.c.highscoreLeaderboard = result.Leaderboard;
+        }
+        if(name == "TotalLinesCleared")
+        {
+            GameManager.manager.c.totalLinesClearedLeaderboard = result.Leaderboard;
+        }
     }
 
     public static void updatePlayerStats(int score)

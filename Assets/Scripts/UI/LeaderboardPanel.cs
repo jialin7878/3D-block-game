@@ -1,18 +1,40 @@
-﻿using System.Collections;
+﻿using PlayFab.ClientModels;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderboardPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Text highscoreText;
+    public Text totalLinesClearedText;
+
+    private void OnEnable()
     {
+        updateText("highscore");
+        updateText("totallinescleared");
+    }
+
+    public void updateText(string name)
+    {
+        if(name.ToLower() == "highscore")
+        {
+            highscoreText.text = genText(GameManager.manager.c.highscoreLeaderboard);
+        }
+        if(name.ToLower() == "totallinescleared")
+        {
+            totalLinesClearedText.text = genText(GameManager.manager.c.totalLinesClearedLeaderboard);
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private string genText(List<PlayerLeaderboardEntry> leaderboard)
     {
-        
+        string str = "";
+        foreach (PlayerLeaderboardEntry player in leaderboard)
+        {
+            str += player.DisplayName + ": " + player.StatValue;
+        }
+        return str;
     }
 }
