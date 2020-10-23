@@ -33,7 +33,7 @@ public class LeaderboardPanel : MonoBehaviour
         string str = "";
         foreach (PlayerLeaderboardEntry player in leaderboard)
         {
-            str += player.DisplayName + ": " + player.StatValue;
+            str += player.DisplayName + ": " + player.StatValue + "\n";
         }
         return str;
     }
