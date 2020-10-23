@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         OnGameOver?.Invoke();
+        PlayfabData.updatePlayerStats(score);
     }
 
     public void restart()

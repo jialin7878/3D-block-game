@@ -108,35 +108,44 @@ public class BlockMovement : MonoBehaviour
 
     void rotate(Vector3 vRotate)
     {
-        int minX, minZ, maxX, maxZ;
-        minX = minZ = int.MaxValue;
-        maxX = maxZ = int.MinValue;
-        foreach (Transform child in transform)
-        {
-            Vector3 v = Playfield.roundVec3(child.position);
-            minX = Math.Min(minX, (int) v.x);
-            minZ = Math.Min(minZ, (int)v.z);
-            maxX = Math.Max(maxX, (int)v.x);
-            maxZ = Math.Max(maxZ, (int)v.z);
-        }
-        transform.Rotate(vRotate);
-        int newMinX, newMinZ, newMaxX, newMaxZ;
-        newMinX = newMinZ = int.MaxValue;
-        newMaxX = newMaxZ = int.MinValue;
-        foreach (Transform child in transform)
-        {
-            Vector3 v = Playfield.roundVec3(child.position);
-            newMinX = Math.Min(newMinX, (int)v.x);
-            newMinZ = Math.Min(newMinZ, (int)v.z);
-            newMaxX = Math.Max(newMaxX, (int)v.x);
-            newMaxZ = Math.Max(newMaxZ, (int)v.z);
-        }
+        //int minX, minZ, maxX, maxZ;
+        //minX = minZ = int.MaxValue;
+        //maxX = maxZ = int.MinValue;
+        //foreach (Transform child in transform)
+        //{
+        //    Vector3 v = Playfield.roundVec3(child.position);
+        //    minX = Math.Min(minX, (int) v.x);
+        //    minZ = Math.Min(minZ, (int)v.z);
+        //    maxX = Math.Max(maxX, (int)v.x);
+        //    maxZ = Math.Max(maxZ, (int)v.z);
+        //}
 
-        Debug.Log("x: (" + minX + ", " + maxX + ')'
-            + "z: (" + minZ + ", " + maxZ + ")");
+        transform.Rotate(vRotate, relativeTo: Space.World);
+        if(!isValidGridPos())
+        {
+            transform.Rotate(-vRotate, relativeTo: Space.World);
+        }
+        else
+        {
+            updateGrid();
+        }
+        //int newMinX, newMinZ, newMaxX, newMaxZ;
+        //newMinX = newMinZ = int.MaxValue;
+        //newMaxX = newMaxZ = int.MinValue;
+        //foreach (Transform child in transform)
+        //{
+        //    Vector3 v = Playfield.roundVec3(child.position);
+        //    newMinX = Math.Min(newMinX, (int)v.x);
+        //    newMinZ = Math.Min(newMinZ, (int)v.z);
+        //    newMaxX = Math.Max(newMaxX, (int)v.x);
+        //    newMaxZ = Math.Max(newMaxZ, (int)v.z);
+        //}
 
-        Debug.Log("new x: (" + newMinX + ", " + newMaxX + ')'
-            + "new z: (" + newMinZ + ", " + newMaxZ + ")");
+        //Debug.Log("x: (" + minX + ", " + maxX + ')'
+        //    + "z: (" + minZ + ", " + maxZ + ")");
+
+        //Debug.Log("new x: (" + newMinX + ", " + newMaxX + ')'
+        //    + "new z: (" + newMinZ + ", " + newMaxZ + ")");
 
 
         // updateGrid();

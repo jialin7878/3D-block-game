@@ -8,4 +8,10 @@ public class StartCanvas : MonoBehaviour
     {
         GameManager.manager.startGame();
     }
+
+    public void getLeaderboard()
+    {
+        PlayfabData.getLeaderboard("Highscore");
+        PlayfabData.getLeaderboard("TotalLinesCleared");
+    }
 }
