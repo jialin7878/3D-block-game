@@ -24,6 +24,27 @@ public class Playfield : MonoBehaviour
         return x && y && z;
     }
 
+    public static Vector3 whichDirection(Vector3 pos)
+    {
+        if(pos.x < 0)
+        {
+            return new Vector3(1, 0, 0);
+        }
+        if(pos.x >= w)
+        {
+            return new Vector3(-1, 0, 0);
+        }
+        if(pos.z < 0)
+        {
+            return new Vector3(0, 0, 1);
+        }
+        if(pos.z >= d)
+        {
+            return new Vector3(0, 0, -1);
+        }
+        return new Vector3(0, 0, 0);
+    }
+
     public static void deleteLayer(int y)
     {
         for (int x = 0; x < w; ++x)

@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 124317694}
   - component: {fileID: 124317693}
   m_Layer: 5
-  m_Name: Text
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,11 +192,14 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: '
 
-    chuyue (world champion!): 20
+    jialin (world champion!): 222
 
-    jialin: 6
+    chuyue: 192
 
-    basketboiz: 0'
+    dego: 176
+
+    basketboiz:
+    0'
 --- !u!222 &124317694
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -729,6 +732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 1800865838}
+  c: {fileID: 11400000, guid: 58fc09297ad80b24a9bdd6ded53667d2, type: 2}
   isGameStarted: 0
   isGameOver: 0
   isGamePaused: 0

@@ -41,9 +41,6 @@ public class Spawner : MonoBehaviour
         }
         int i = order[0];
         order.RemoveAt(0);
-        Debug.Log("i = " + i);
-        Debug.Log(SceneManager.GetActiveScene());
-
         Instantiate(blocks[i], transform.position, Quaternion.identity);
     }
 

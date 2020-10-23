@@ -38,6 +38,20 @@ public class BlockMovement : MonoBehaviour
         return true;
     }
 
+    bool isValidGridBlock(Vector3 v)
+    {
+        if(!Playfield.insideBorder(v))
+        {
+            return false;
+        }
+        if (Playfield.grid[(int)v.x, (int)v.y, (int)v.z] != null &&
+            Playfield.grid[(int)v.x, (int)v.y, (int)v.z].parent != transform)
+        {
+            return false;
+        }
+        return true;
+    }
+
     void updateGrid()
     {
         // Remove old children from grid
@@ -55,23 +69,16 @@ public class BlockMovement : MonoBehaviour
         }
     }
 
-    bool tryToMove(Vector3 v, bool isRotation)
+    bool tryToMove(Vector3 v)
     {
-        if (isRotation)
-            transform.Rotate(v, Space.World);
-        else
-            transform.position += v;
-
+        transform.position += v;
         if (isValidGridPos())
         {
             updateGrid();
             return true;
         }
 
-        if (isRotation)
-            transform.Rotate(-v, Space.World);
-        else
-            transform.position -= v;
+        transform.position -= v;
         return false;
     }
 
@@ -80,7 +87,7 @@ public class BlockMovement : MonoBehaviour
         for(int i = 14; i >= 0; i--)
         {
             Vector3 v = new Vector3(0, -i, 0);
-            if (tryToMove(v, false))
+            if (tryToMove(v))
             {
                 break;
             }
@@ -99,39 +106,75 @@ public class BlockMovement : MonoBehaviour
 
     }
 
+    void rotate(Vector3 vRotate)
+    {
+        int minX, minZ, maxX, maxZ;
+        minX = minZ = int.MaxValue;
+        maxX = maxZ = int.MinValue;
+        foreach (Transform child in transform)
+        {
+            Vector3 v = Playfield.roundVec3(child.position);
+            minX = Math.Min(minX, (int) v.x);
+            minZ = Math.Min(minZ, (int)v.z);
+            maxX = Math.Max(maxX, (int)v.x);
+            maxZ = Math.Max(maxZ, (int)v.z);
+        }
+        transform.Rotate(vRotate);
+        int newMinX, newMinZ, newMaxX, newMaxZ;
+        newMinX = newMinZ = int.MaxValue;
+        newMaxX = newMaxZ = int.MinValue;
+        foreach (Transform child in transform)
+        {
+            Vector3 v = Playfield.roundVec3(child.position);
+            newMinX = Math.Min(newMinX, (int)v.x);
+            newMinZ = Math.Min(newMinZ, (int)v.z);
+            newMaxX = Math.Max(newMaxX, (int)v.x);
+            newMaxZ = Math.Max(newMaxZ, (int)v.z);
+        }
+
+        Debug.Log("x: (" + minX + ", " + maxX + ')'
+            + "z: (" + minZ + ", " + maxZ + ")");
+
+        Debug.Log("new x: (" + newMinX + ", " + newMaxX + ')'
+            + "new z: (" + newMinZ + ", " + newMaxZ + ")");
+
+
+        // updateGrid();
+    }
+
     void parseKeyInput()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            tryToMove(new Vector3(-1, 0, 0), false);
+            tryToMove(new Vector3(-1, 0, 0));
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            tryToMove(new Vector3(1, 0, 0), false);
+            tryToMove(new Vector3(1, 0, 0));
 
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            tryToMove(new Vector3(0, 0, -1), false);
+            tryToMove(new Vector3(0, 0, -1));
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            tryToMove(new Vector3(0, 0, 1), false);
+            tryToMove(new Vector3(0, 0, 1));
 
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            tryToMove(new Vector3(-90, 0, 0), true);
+            rotate(new Vector3(-90, 0, 0));
 
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            tryToMove(new Vector3(0, 0, -90), true);
+            rotate(new Vector3(0, 0, -90));
 
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            tryToMove(new Vector3(0, -90, 0), true);
+            rotate(new Vector3(0, -90, 0));
 
         }
         else if (Input.GetKeyDown(KeyCode.Space))
@@ -142,7 +185,7 @@ public class BlockMovement : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.S) || Time.time - lastFall >= 2)
         {
-            if (!tryToMove(new Vector3(0, -1, 0), false))
+            if (!tryToMove(new Vector3(0, -1, 0)))
             {
                 touchDown();
             }

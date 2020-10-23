@@ -34,6 +34,12 @@ public class GameManager : MonoBehaviour
             manager = this;
         }
         DontDestroyOnLoad(this);
+        PlayfabLogin.loginWithDeviceID();
+    }
+
+    public void setPlayfabID(String id)
+    {
+        c.PlayfabID = id;
     }
 
     public void incrementScore()
@@ -107,7 +113,6 @@ public class GameManager : MonoBehaviour
 
     public void spawnNext()
     {
-        Debug.Log("called spawn next");
         spawner.spawnNext();
         OnBlockSpawned?.Invoke(spawner.getNext());
     }
