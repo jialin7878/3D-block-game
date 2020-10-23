@@ -11,7 +11,7 @@ public class UsernameInput : MonoBehaviour
     private void OnEnable()
     {
         string initialUsername = GameManager.manager.c.displayName;
-        userInput.text = initialUsername;
+        placeholder.text = initialUsername;
     }
 
     public void updateUsername()

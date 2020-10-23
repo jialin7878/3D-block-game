@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
         PlayfabLogin.loginWithDeviceID();
+        backToMenu();
     }
 
     public void setPlayfabID(String id)
@@ -86,7 +87,7 @@ public class GameManager : MonoBehaviour
         isGameStarted = false;
         isGameOver = false;
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene((int) SceneIndex.start);
     }
 
     public void pauseGame()
@@ -111,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator loadScene()
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync(1);
+        AsyncOperation op = SceneManager.LoadSceneAsync((int) SceneIndex.game);
         while (!op.isDone)
         {
             yield return null;
@@ -152,11 +153,6 @@ public class GameManager : MonoBehaviour
             {
                 restart();
             }
-
-            if(Input.GetKeyDown(KeyCode.Q))
-            {
-                backToMenu();
-            }
         } else
         {
             if(Input.GetKeyDown(KeyCode.P))
@@ -185,4 +181,11 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+}
+
+enum SceneIndex
+{
+    load = 0,
+    start = 1,
+    game = 2
 }

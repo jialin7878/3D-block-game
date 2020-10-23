@@ -9,7 +9,7 @@ public class InGameDisplay : MonoBehaviour
 
     public GameObject pauseScreen;
     public Text scoreText;
-    public Text gameOverText;
+    public GameObject gameOverText;
     public Image blockDisplay;
 
     private void Start()
@@ -43,6 +43,11 @@ public class InGameDisplay : MonoBehaviour
     public void hidePauseScreen()
     {
         pauseScreen.SetActive(false);
+    }
+
+    public void returnToMainMenu()
+    {
+        GameManager.manager.backToMenu();
     }
 
     private void OnDestroy()
