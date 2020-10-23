@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,6 +42,12 @@ public class GameManager : MonoBehaviour
     public void setPlayfabID(String id)
     {
         c.PlayfabID = id;
+    }
+
+    public void setPlayfabUsername(String name)
+    {
+        c.displayName = name;
+        username.text = name;
     }
 
     public void incrementScore()
@@ -157,4 +165,24 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    #region UI
+
+    public GameObject notifNoButton;
+    public Text username;
+
+    public void notifyForSeconds(string message, float seconds)
+    {
+        StartCoroutine(wait(message, seconds));
+    }
+
+    IEnumerator wait(string message, float seconds)
+    {
+        notifNoButton.SetActive(true);
+        notifNoButton.GetComponentInChildren<Text>().text = message;
+        yield return new WaitForSeconds(seconds);
+        notifNoButton.SetActive(false);
+    }
+
+    #endregion
 }

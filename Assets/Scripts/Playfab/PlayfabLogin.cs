@@ -19,22 +19,24 @@ public class PlayfabLogin : MonoBehaviour
 
     public static void loginWithDeviceID()
     {
-        //#if UNITY_ANDROID
         var request = new LoginWithAndroidDeviceIDRequest { AndroidDeviceId = SystemInfo.deviceUniqueIdentifier };
         PlayFabClientAPI.LoginWithAndroidDeviceID(request, OnLoginSuccess, OnLoginFailure);
-        //#endif
     }
 
 
     private static void OnLoginSuccess(LoginResult result)
     {
         GameManager.manager.setPlayfabID(result.PlayFabId);
+        GameManager.manager.notifyForSeconds("logged in", 2.2f);
         Debug.Log("login successful");
+
+        PlayfabData.GetAccountInfo();
     }
 
     private static void OnLoginFailure(PlayFabError error)
     {
         Debug.LogError("Login Failure: ");
         Debug.LogError(error.Error);
+        GameManager.manager.notifyForSeconds("login failed", 2.2f);
     }
 }

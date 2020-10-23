@@ -6,6 +6,7 @@ using UnityEngine;
 public class Constants : ScriptableObject
 {
     public string PlayfabID;
+    public string displayName;
 
     public static Color inactiveColor;
     public static Color activeColor;
