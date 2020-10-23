@@ -37,6 +37,6 @@ public class PlayfabLogin : MonoBehaviour
     {
         Debug.LogError("Login Failure: ");
         Debug.LogError(error.Error);
-        GameManager.manager.notifyForSeconds("login failed", 2.2f);
+        GameManager.manager.notifyForSeconds("error.Error", 2.2f);
     }
 }
