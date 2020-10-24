@@ -76,6 +76,7 @@ public class BlockMovement : MonoBehaviour
         {
             Vector3 v = Playfield.roundVec3(child.position);
             Playfield.grid[(int)v.x, (int)v.y, (int)v.z] = child;
+            Playfield.topLevel = Math.Max(Playfield.topLevel, (int) v.y + 1);
         }
     }
 
@@ -111,7 +112,7 @@ public class BlockMovement : MonoBehaviour
         enabled = false;
         foreach(Transform child in transform)
         {
-            child.GetComponent<BlockMaterial>().changeColor();
+            child.GetComponent<BlockMaterial>().touchDown();
         }
 
     }

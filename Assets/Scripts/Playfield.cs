@@ -8,7 +8,9 @@ public class Playfield : MonoBehaviour
     public static int w = 5;
     public static int h = 14;
     public static int d = 5;
-    public static Transform[,,] grid = new Transform[20, h, 20];
+    public static Transform[,,] grid = new Transform[w, h, d];
+
+    public static int topLevel = 0;
 
     public static Vector3 roundVec3(Vector3 v)
     {
@@ -24,27 +26,6 @@ public class Playfield : MonoBehaviour
         return x && y && z;
     }
 
-    public static Vector3 whichDirection(Vector3 pos)
-    {
-        if(pos.x < 0)
-        {
-            return new Vector3(1, 0, 0);
-        }
-        if(pos.x >= w)
-        {
-            return new Vector3(-1, 0, 0);
-        }
-        if(pos.z < 0)
-        {
-            return new Vector3(0, 0, 1);
-        }
-        if(pos.z >= d)
-        {
-            return new Vector3(0, 0, -1);
-        }
-        return new Vector3(0, 0, 0);
-    }
-
     public static void deleteLayer(int y)
     {
         for (int x = 0; x < w; ++x)
@@ -56,6 +37,7 @@ public class Playfield : MonoBehaviour
             }
         }
         GameManager.manager.incrementScore();
+        topLevel--;
     }
 
     public static void clearField()
@@ -70,6 +52,7 @@ public class Playfield : MonoBehaviour
                 }
             }
         }
+        topLevel = 0;
     }
 
     public static void lowerLayer(int y)
