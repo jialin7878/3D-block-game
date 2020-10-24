@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPlayerPause;
     public event Action OnPlayerResume;
     public event Action OnGameOver;
+    public event Action OnHoldBlock;
     public event Action<int> OnBlockSpawned;
     #endregion
 
@@ -36,8 +37,18 @@ public class GameManager : MonoBehaviour
             manager = this;
         }
         DontDestroyOnLoad(this);
-        PlayfabLogin.loginWithDeviceID();
-        backToMenu();
+    }
+
+    public void login()
+    {
+        if(usernameField.text.Length <= 4 || usernameField.text.Length > 24)
+        {
+            notifyForSeconds("username must be between 4 nd 25 characters", 2f);
+        } else
+        {
+            PlayfabLogin.loginWithUsername(usernameField.text);
+            backToMenu();
+        }
     }
 
     public void setPlayfabID(String id)
@@ -65,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void gameOver()
     {
+        Debug.Log("game over");
         isGameOver = true;
         OnGameOver?.Invoke();
         PlayfabData.updatePlayerStats(score);
@@ -127,20 +139,31 @@ public class GameManager : MonoBehaviour
         OnBlockSpawned?.Invoke(spawner.getNext());
     }
 
+    void holdBlock()
+    {
+        //int i = spawner.holdBlock();
+        //OnHoldBlock?.Invoke();
+        //if(i == -1)
+        //{
+        //    spawnNext();
+        //}
+    }
+
     private void Update()
     {
-# if UNITY_EDITOR
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            spawnNext();
-        }
-# endif
 
         if (isGameStarted && !isGameOver)
         {
-            if(!isGamePaused && (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape)))
+            if(!isGamePaused)
             {
-                pauseGame();
+                if(Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+                {
+                    pauseGame();
+                }
+                if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    holdBlock();
+                }
             }
             if(isGamePaused && Input.GetKeyDown(KeyCode.R))
             {
@@ -167,6 +190,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject notifNoButton;
     public Text username;
+
+    public InputField usernameField;
 
     public void notifyForSeconds(string message, float seconds)
     {

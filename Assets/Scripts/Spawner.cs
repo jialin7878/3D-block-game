@@ -9,6 +9,9 @@ public class Spawner : MonoBehaviour
 {
     public GameObject[] blocks;
 
+    public int holdingBlock = -1;
+    public int currentBlock;
+
     private System.Random rng = new System.Random();
     private List<int> order = new List<int>();
 
@@ -35,12 +38,14 @@ public class Spawner : MonoBehaviour
 
     public void spawnNext()
     {
+        Debug.Log("called spawn next");
         if(order.Count <= 2)
         {
             generateOrders();
         }
         int i = order[0];
         order.RemoveAt(0);
+        currentBlock = i;
         Instantiate(blocks[i], transform.position, Quaternion.identity);
     }
 
@@ -49,4 +54,16 @@ public class Spawner : MonoBehaviour
         return order[0];
     }
 
+    public int holdBlock()
+    {
+        Debug.Log("called hold block");
+        int og = holdingBlock;
+        holdingBlock = currentBlock;
+        if(og != -1)
+        {
+            currentBlock = og;
+            Instantiate(blocks[og], transform.position, Quaternion.identity);
+        }
+        return og;
+    }
 }
