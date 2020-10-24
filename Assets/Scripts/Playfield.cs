@@ -30,7 +30,7 @@ public class Playfield : MonoBehaviour
     {
         for (int x = 0; x < w; ++x)
         {
-            for(int z = 0; z < d; ++z)
+            for (int z = 0; z < d; ++z)
             {
                 Destroy(grid[x, y, z].gameObject);
                 grid[x, y, z] = null;
