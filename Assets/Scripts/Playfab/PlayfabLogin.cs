@@ -23,6 +23,7 @@ public class PlayfabLogin : MonoBehaviour
 
     public static void loginWithUsername(string username)
     {
+        GameManager.manager.isLoading = true;
         var request = new LoginWithPlayFabRequest { Username = username, Password = "123456"};
         PlayFabClientAPI.LoginWithPlayFab(request, OnLoginSuccess,  error => OnLoginFailure(error, username));
     }
@@ -48,6 +49,7 @@ public class PlayfabLogin : MonoBehaviour
             Debug.LogError("Login Failure: ");
             Debug.LogError(error.Error);
             GameManager.manager.notifyForSeconds(error.ErrorMessage + "  " + error.Error, 2.2f);
+            GameManager.manager.isLoading = false;
         }
     }
 
@@ -64,6 +66,9 @@ public class PlayfabLogin : MonoBehaviour
                 PlayfabData.UpdateDisplayName(username);
                 loginWithUsername(username);
                 },
-            error => Debug.LogError(error.Error));
+            error => {
+                Debug.LogError(error.Error);
+                GameManager.manager.isLoading = false;
+            });
     }
 }

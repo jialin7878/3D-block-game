@@ -11,6 +11,14 @@ public class LeaderboardPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(retrieveLeaderboard());
+    }
+
+    private IEnumerator retrieveLeaderboard()
+    {
+        PlayfabData.getLeaderboard("Highscore");
+        PlayfabData.getLeaderboard("TotalLinesCleared");
+        yield return new WaitWhile(() => GameManager.manager.isLoading);
         updateText("highscore");
         updateText("totallinescleared");
     }

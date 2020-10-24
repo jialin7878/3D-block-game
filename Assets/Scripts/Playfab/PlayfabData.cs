@@ -11,10 +11,16 @@ public class PlayfabData : MonoBehaviour
     {
         GetAccountInfoRequest request = new GetAccountInfoRequest();
         PlayFabClientAPI.GetAccountInfo(request,
-            infoResult => {
+            infoResult =>
+            {
                 GameManager.manager.setPlayfabUsername(infoResult.AccountInfo.TitleInfo.DisplayName);
+                GameManager.manager.isLoading = false;
             },
-            error => Debug.LogError(error.Error));
+            error =>
+            {
+                Debug.LogError(error.Error);
+                GameManager.manager.isLoading = false;
+            });
     }
 
     //returns true if the username is already taken
@@ -44,6 +50,7 @@ public class PlayfabData : MonoBehaviour
 
     public static void getLeaderboard(string leaderboardName)
     {
+        GameManager.manager.isLoading = true;
         var request = new GetLeaderboardRequest
         {
             StartPosition = 0,
@@ -56,6 +63,7 @@ public class PlayfabData : MonoBehaviour
             {
                 Debug.LogError("error getting leaderboard");
                 Debug.Log(error.Error);
+                GameManager.manager.isLoading = false;
             });
     }
 
@@ -70,6 +78,7 @@ public class PlayfabData : MonoBehaviour
         {
             GameManager.manager.c.totalLinesClearedLeaderboard = result.Leaderboard;
         }
+        GameManager.manager.isLoading = false;
     }
 
     public static void updatePlayerStats(int score)

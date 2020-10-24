@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public bool isGamePaused;
     private int score = 0;
 
+    public bool isLoading;
+
     #region Events
     public event Action<int> OnPlayerScore;
     public event Action OnPlayerPause;
@@ -47,8 +49,14 @@ public class GameManager : MonoBehaviour
         } else
         {
             PlayfabLogin.loginWithUsername(usernameField.text);
-            backToMenu();
+            StartCoroutine(load(() => backToMenu()));
         }
+    }
+
+    public IEnumerator load(Action onLoaded)
+    {
+        yield return new WaitWhile(() => isLoading);
+        onLoaded?.Invoke();
     }
 
     public void setPlayfabID(String id)
